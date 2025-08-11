@@ -1,0 +1,51 @@
+# Wren AI Service Configuration
+# LLM Configuration
+---
+type: llm
+provider: litellm_llm
+models:
+  - api_base: "http://host.docker.internal:11434/v1"
+    model: ollama_chat/gemma3:1b
+    timeout: 120
+    kwargs: {}
+
+# Embedding Configuration
+---
+type: embedder
+provider: litellm_embedder
+models:
+  - model: ollama/nomic-embed-text
+    api_base: "http://host.docker.internal:11434/v1"
+    timeout: 120
+    kwargs: {}
+
+# Vector Database
+---
+type: document_store
+provider: qdrant
+location: http://qdrant:6333
+embedding_model_dim: 768 # put your embedding model dimension here
+timeout: 120
+recreate_index: true
+
+# Engine Configuration (UI)
+---
+type: engine
+provider: wren_ui
+endpoint: http://wren-ui:3000
+
+# Engine Configuration (IBIS)
+---
+type: engine
+provider: wren_ibis
+endpoint: http://ibis-server:8000
+
+# Database Configuration
+---
+database:
+  type: "mysql"
+  host: "wren-mysql"
+  port: 3306
+  user: "wren"
+  password: "1376"
+  database: "wrenai"
